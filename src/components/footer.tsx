@@ -1,6 +1,6 @@
 import Html from '@kitajs/html'
 
-function Footer() {
+function Footer(): JSX.Element {
     return (
         <div>
             Footer

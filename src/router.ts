@@ -1,44 +1,57 @@
-interface Options {
-    handler: Function,
-    method: string,
-}
+const GET = "GET";
+const HEAD = "HEAD";
+const POST = "POST";
+const PUT = "PUT";
+const DELETE = "DELETE";
+const PATCH = "PATCH";
 
-interface Routes {
-    path: string,
-    options: Options
-}
+export default class JSXRouter {
+    routeTable: Map<string, Function>
+    fallbackHandler: Function
 
-export default class SimpleRouter {
-    routeTable: Map<string, Options>;
-
-    constructor() {
+    constructor(fallbackHandler: Function) {
         this.routeTable = new Map()
+        this.fallbackHandler = fallbackHandler
     }
 
-    register(routes: Array<Routes>) {
-        routes.forEach(({path, options}) => {
-            if (this.routeTable.has(path) && (this.routeTable.get(path)?.method === options.method)) {
-                throw Error(`${options.method} ${path} already in use`)
-            }
-    
-            this.routeTable.set(path, options)
-        })
+    get(path: string, handler: Function) {
+        this.routeTable.set(GET + path, handler)
     }
 
-    route(request: Request) {
+    head(path: string, handler: Function) {
+        this.routeTable.set(HEAD + path, handler)
+    }
+
+    post(path: string, handler: Function) {
+        this.routeTable.set(POST + path, handler)
+    }
+
+    put(path: string, handler: Function) {
+        this.routeTable.set(PUT + path, handler)
+    }
+
+    delete(path: string, handler: Function) {
+        this.routeTable.set(DELETE + path, handler)
+    }
+
+    patch(path: string, handler: Function) {
+        this.routeTable.set(PATCH + path, handler)
+    }
+
+    route(request: Request): Response {
+        console.log(`Incoming request ${request.url}`)
+
         const url = new URL(request.url)
         const path = url.pathname
         const method = request.method
 
-        if (!this.routeTable.has(path)) {
-            return null
-        }
+        const markupResponse = this.routeTable.has(method + path) ? this.routeTable.get(method + path)() : this.fallbackHandler()
 
-        if ((this.routeTable.get(path)?.method !== method)) {
-            return null
-        }
-
-        return this.routeTable.get(path)?.handler
+        return new Response(markupResponse, {
+            headers: {
+                "Content-Type": "text/html"
+            }
+        })
     }
 
 }

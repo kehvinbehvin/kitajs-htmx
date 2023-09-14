@@ -1,6 +1,6 @@
 import Html from '@kitajs/html'
 
-function Error() {
+function Error(): JSX.Element {
     return (
         <div>
             Error
