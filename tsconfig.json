@@ -1,0 +1,11 @@
+// tsconfig.json
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "jsxFactory": "Html.createElement",
+        "jsxFragmentFactory": "Html.Fragment",
+        "esModuleInterop": true,
+        "types": ["bun-types"]
+    },
+    "include": ["src/**/**.tsx"],   
+}

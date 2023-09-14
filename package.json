@@ -1,0 +1,6 @@
+{
+  "dependencies": { "@kitajs/html": "^2.1.2", "typescript": "^5.2.2" },
+  "devDependencies": {
+    "bun-types": "^1.0.1"
+  }
+}

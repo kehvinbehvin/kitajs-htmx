@@ -1,0 +1,11 @@
+import Html from '@kitajs/html'
+
+function Header() {
+    return (
+        <div>
+            Header
+        </div>
+    )
+}
+
+export default Header
